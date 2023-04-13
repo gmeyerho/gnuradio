@@ -14,11 +14,9 @@
   and will be overwritten during the build process
  */
 
+static const char *__doc_gr_qtgui_fosphor_formatter = R"doc()doc";
 
-static const char* __doc_gr_qtgui_fosphor_formatter = R"doc()doc";
+static const char *__doc_gr_qtgui_fosphor_formatter_fosphor_formatter =
+    R"doc()doc";
 
-
-static const char* __doc_gr_qtgui_fosphor_formatter_fosphor_formatter = R"doc()doc";
-
-
-static const char* __doc_gr_qtgui_fosphor_formatter_make = R"doc()doc";
+static const char *__doc_gr_qtgui_fosphor_formatter_make = R"doc()doc";

@@ -84,7 +84,7 @@ fosphor_formatter_impl::fosphor_formatter_impl(int fft_size,
                                                double trise,
                                                double tdecay)
     : hier_block2("fosphor_formatter",
-                  io_signature::make(1, 1, sizeof(float) * fft_size),
+                  io_signature::make(1, 1, sizeof(gr_complex)),
                   io_signature::make(2, 2, sizeof(unsigned char) * fft_size)),
       // Init attributes
       d_fftsize(fft_size),
@@ -93,13 +93,14 @@ fosphor_formatter_impl::fosphor_formatter_impl(int fft_size,
       d_epsilon(epsilon),
       d_trise(trise),
       d_tdecay(tdecay),
+      d_maxhold_buf(fft_size, 0.0f),      
       d_histo_buf_f(fft_size * d_num_bins, 0.0f),
       d_hit_count(fft_size * d_num_bins, 0),
       // Init sub-blocks
-      d_s2v(gr::blocks::stream_to_vector::make(sizeof(float), fft_size)),
+      d_s2v(gr::blocks::stream_to_vector::make(sizeof(gr_complex), fft_size)),
       d_input_decim(
-          gr::blocks::keep_one_in_n::make(sizeof(float) * fft_size, input_decim)),
-      d_fft(gr::fft::fft_v<float, true /* forward */>::make(
+          gr::blocks::keep_one_in_n::make(sizeof(gr_complex) * fft_size, input_decim)),
+      d_fft(gr::fft::fft_v<gr_complex, true /* forward */>::make(
           fft_size, gr::fft::window::blackman_harris(fft_size), true /* shift */)),
       d_c2m(gr::blocks::complex_to_mag_squared::make(fft_size)),
       d_log(gr::blocks::nlog10_ff::make(calculate_log10_scale(scale),
@@ -112,7 +113,7 @@ fosphor_formatter_impl::fosphor_formatter_impl(int fft_size,
                      gr_vector_const_void_star& input_items,
                      gr_vector_void_star& output_items) -> int {
               const float* in = static_cast<const float*>(input_items[0]);
-              float* out = static_cast<float*>(output_items[0]);
+              unsigned char* out = static_cast<unsigned char*>(output_items[0]);
               const int items_to_process = std::min(noutput_items, ninput_items[0]);
               for (int i; i < items_to_process; i++) {
                   float_array_to_uchar(in, out, fft_size);
@@ -189,7 +190,7 @@ int fosphor_formatter_impl::_process_histogram(gr::blocks::lambda_block* self,
     for (int i; i < items_to_process; i++) {
         //// Update max hold:
         // Decay previous value
-        volk_32f_s32f_multiply_32f(d_maxhold_buf.data(), d_maxhold_buf.data(), d_epsilon);
+        volk_32f_s32f_multiply_32f(d_maxhold_buf.data(), d_maxhold_buf.data(), d_epsilon, d_fftsize);
         // Compare with current max
         volk_32f_x2_max_32f(
             d_maxhold_buf.data(), d_maxhold_buf.data(), in_logfft_f, d_fftsize);
@@ -197,7 +198,10 @@ int fosphor_formatter_impl::_process_histogram(gr::blocks::lambda_block* self,
         for (size_t i = 0; i < static_cast<size_t>(d_fftsize); i++) {
             // This >>2 assumes d_num_bins is 64
             const uint8_t bin_index = in_logfft_b[i] >> 2;
-            d_hit_count[bin_index * d_fftsize + i]++;
+            for (size_t j = 0; j < bin_index; j++)
+            {
+                d_hit_count[j * d_fftsize + i]++;
+            }
         }
         d_histo_count++;
         in_logfft_f += d_fftsize;
@@ -211,7 +215,7 @@ int fosphor_formatter_impl::_process_histogram(gr::blocks::lambda_block* self,
 
     // Now update the output histogram buffer
     for (size_t i = 0; i < d_histo_buf_f.size(); ++i) {
-        d_histo_buf_f[i] = _update_histo_val(d_histo_buf_f[i], d_hit_count[i]);
+        _update_histo_val(d_histo_buf_f[i], d_hit_count[i]);
     }
 
     // Copy the histogram buffer
