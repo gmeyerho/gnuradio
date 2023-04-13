@@ -64,6 +64,7 @@ set(QTGUI_SOURCES
 
 set(QTGUI_LIBS
     gnuradio-runtime
+    gnuradio-blocks
     gnuradio-fft
     gnuradio-filter
     Volk::volk
