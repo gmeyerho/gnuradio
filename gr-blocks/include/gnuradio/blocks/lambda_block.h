@@ -60,6 +60,11 @@ public:
     {
         gr::block::add_item_tag(which_output, abs_offset, key, value, srcid);
     }
+
+    inline void add_item_tag(unsigned int which_output, const tag_t& tag)
+    {
+        gr::block::add_item_tag(which_output, tag);
+    }
 };
 
 } /* namespace blocks */
