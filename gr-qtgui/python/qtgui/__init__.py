@@ -49,4 +49,3 @@ from .graphicoverlay import GrGraphicOverlay
 from .auto_correlator_sink import AutoCorrelatorSink
 from .auto_correlator_sink import AutoCorrelator
 from .auto_correlator_sink import Normalize
-from .fosphorgl_sink import FosphorGlSink

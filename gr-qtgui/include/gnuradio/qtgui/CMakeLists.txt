@@ -33,7 +33,6 @@ install(
           freq_sink_c.h
           freq_sink_f.h
           fosphor_display.h
-          fosphor_formatter.h
           FrequencyDisplayPlot.h
           histogram_sink_f.h
           histogramdisplayform.h
