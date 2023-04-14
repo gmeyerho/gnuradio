@@ -39,6 +39,9 @@ install(FILES ${yml_blocks} uhd_amsg_source.block.yml uhd.tree.yml
 if(ENABLE_UHD_RFNOC)
     install(
         FILES rfnoc.domain.yml
+              uhd_fosphor_display.block.yml
+              uhd_fosphor_formatter.block.yml
+              uhd_fosphorgl_sink.block.yml
               uhd_fpga_clk.domain.yml
               uhd_fpga_ctrl.domain.yml
               uhd_fpga_data.domain.yml

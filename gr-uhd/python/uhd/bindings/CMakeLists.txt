@@ -34,7 +34,25 @@ if(ENABLE_UHD_RFNOC)
         rfnoc_tx_streamer_python.cc)
 endif()
 
+if(ENABLE_GR_UHD_OPENGL)
+    list(
+        APPEND
+        uhd_python_files
+        fosphor_display_python.cc
+        fosphor_formatter_python.cc)
+endif(ENABLE_GR_UHD_OPENGL)
+
+set(include_dirs ${Qt5Widgets_INCLUDE_DIRS})
+if(QWT_FOUND)
+    list(APPEND include_dirs ${QWT_INCLUDE_DIRS})
+endif(QWT_FOUND)
+list(JOIN include_dirs "," extra_includes)
+
 gr_pybind_make(uhd ../../.. gr::uhd "${uhd_python_files}")
+
+if(ENABLE_GR_UHD_OPENGL)
+    target_compile_definitions(uhd_python PRIVATE OPENGL_FOUND)
+endif(ENABLE_GR_UHD_OPENGL)
 
 install(
     TARGETS uhd_python

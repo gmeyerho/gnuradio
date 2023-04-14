@@ -25,6 +25,10 @@ void bind_amsg_source(py::module&);
 void bind_usrp_block(py::module&);
 void bind_usrp_sink(py::module&);
 void bind_usrp_source(py::module&);
+#ifdef OPENGL_FOUND
+void bind_fosphor_display(py::module&);
+void bind_fosphor_formatter(py::module&);
+#endif
 void bind_rfnoc_block(py::module&);
 void bind_rfnoc_ddc(py::module&);
 void bind_rfnoc_duc(py::module&);
@@ -65,6 +69,10 @@ PYBIND11_MODULE(uhd_python, m)
     bind_usrp_source(m);
 
 #ifdef GR_ENABLE_UHD_RFNOC
+#ifdef OPENGL_FOUND
+    bind_fosphor_display(m);
+    bind_fosphor_formatter(m);
+#endif
     bind_rfnoc_block(m);
     bind_rfnoc_ddc(m);
     bind_rfnoc_duc(m);

@@ -28,3 +28,11 @@ if(ENABLE_UHD_RFNOC)
               rfnoc_tx_streamer.h
         DESTINATION ${GR_INCLUDE_DIR}/gnuradio/uhd)
 endif(ENABLE_UHD_RFNOC)
+
+if (ENABLE_GR_UHD_OPENGL)
+    install(FILES
+        fosphor_display.h
+        fosphor_formatter.h
+        DESTINATION ${GR_INCLUDE_DIR}/gnuradio/uhd
+    )
+endif (ENABLE_GR_UHD_OPENGL)

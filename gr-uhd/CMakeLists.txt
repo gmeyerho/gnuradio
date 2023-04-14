@@ -17,6 +17,17 @@ else()
     set(UHD_FOUR_POINT_OH_RFNOC FALSE)
 endif()
 
+find_package(Qt5 QUIET
+    COMPONENTS Core Gui Widgets
+    OPTIONAL_COMPONENTS OpenGL)
+if(Qt5OpenGL_FOUND AND Qt5Widgets_FOUND)
+    set(ENABLE_GR_UHD_OPENGL TRUE)
+    set(OpenGL_GL_PREFERENCE GLVND)
+    message(STATUS "Qt enabled and Qt5 libraries found; Fosphor enabled")
+endif(Qt5OpenGL_FOUND)
+
+find_package(Qwt)
+
 ########################################################################
 # Register component
 ########################################################################

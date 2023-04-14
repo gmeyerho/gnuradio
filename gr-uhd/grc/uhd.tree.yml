@@ -7,6 +7,9 @@
     - Device Control:
       - uhd_rfnoc_graph
     - Blocks:
+      - uhd_fosphor_display
+      - uhd_fosphor_formatter
+      - uhd_fosphorgl_sink
       - uhd_rfnoc_ddc
       - uhd_rfnoc_duc
       - uhd_rfnoc_fft
