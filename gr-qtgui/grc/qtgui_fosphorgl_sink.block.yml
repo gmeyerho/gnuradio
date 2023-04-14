@@ -29,28 +29,28 @@ parameters:
     default: 64
 -   id: scale
     label: Scale Factor
-    dtype: real
+    dtype: double
     default: 1.0
     hide: part
 -   id: alpha
     label: FFT Averaging (Alpha)
-    dtype: real
+    dtype: double
     default: 0.9
     hide: part
 -   id: epsilon
     label: Max-Hold Decay (Epsilon)
-    dtype: real
+    dtype: double
     default: 0.9
     hide: part
 -   id: trise
     label: Rise Constant
-    dtype: real
-    default: 16.0
+    dtype: double
+    default: 0.9
     hide: part
--   id: tdecay
+-   id: trise
     label: Decay Constant
-    dtype: real
-    default: 1024.0
+    dtype: double
+    default: 0.9
     hide: part
 -   id: grid_enabled
     label: Grid

@@ -25,7 +25,6 @@ list(
     eye_sink_c_python.cc
     eye_sink_f_python.cc
     form_menus_python.cc
-    fosphor_formatter_python.cc
     freq_sink_c_python.cc
     freq_sink_f_python.cc
     freqcontrolpanel_python.cc
@@ -59,11 +58,7 @@ list(
     waterfalldisplayform_python.cc)
 
 if(ENABLE_GR_QTGUI_OPENGL)
-    list(
-        APPEND
-        qtgui_python_files
-        fosphor_display_python.cc
-        fosphor_formatter_python.cc)
+    list(APPEND qtgui_python_files fosphor_display_python.cc)
 endif(ENABLE_GR_QTGUI_OPENGL)
 
 list(APPEND qtgui_python_files python_bindings.cc)

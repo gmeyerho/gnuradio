@@ -34,8 +34,6 @@ private:
                            gr_vector_const_void_star& input_items,
                            gr_vector_void_star& output_items);
 
-    void _update_histo_val(float& hv, const int16_t hc);
-
 
     const int d_fftsize;
     const int d_num_bins;
