@@ -65,5 +65,6 @@ if(ENABLE_UHD_RFNOC)
               uhd_rfnoc_switchboard.block.yml
               uhd_rfnoc_tx_streamer.block.yml
               uhd_rfnoc_vector_iir.block.yml
+              uhd_streampushbutton.block.yml
         DESTINATION ${GRC_BLOCKS_DIR})
 endif(ENABLE_UHD_RFNOC)

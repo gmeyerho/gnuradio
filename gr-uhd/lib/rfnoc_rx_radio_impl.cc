@@ -165,16 +165,22 @@ void rfnoc_rx_radio_impl::_cmd_handler_stream_cmd(const pmt::pmt_t& cmd_p,
                                                   int chan_i,
                                                   const pmt::pmt_t& msg)
 {
+    d_logger->warn("In command handler with cmd_p = {},chan_i = {:d},msg = {}",
+        pmt::write_string(cmd_p), chan_i, pmt::write_string(msg));
+    chan_i = 0;
     ::uhd::stream_cmd_t cmd(::uhd::stream_cmd_t::STREAM_MODE_START_CONTINUOUS);
     const std::string stream_mode_str = pmt::write_string(
         pmt::dict_ref(cmd_p, pmt::mp("stream_mode"), pmt::mp("start_cont")));
     if (stream_mode_str == "start_cont") {
         // All set already
     } else if (stream_mode_str == "stop_cont") {
+        d_logger->warn("stop cont");
         cmd.stream_mode = ::uhd::stream_cmd_t::STREAM_MODE_STOP_CONTINUOUS;
     } else if (stream_mode_str == "num_done") {
+        d_logger->warn("num done");
         cmd.stream_mode = ::uhd::stream_cmd_t::STREAM_MODE_NUM_SAMPS_AND_DONE;
     } else if (stream_mode_str == "num_more") {
+        d_logger->warn("num more");
         cmd.stream_mode = ::uhd::stream_cmd_t::STREAM_MODE_NUM_SAMPS_AND_MORE;
     } else {
         d_logger->warn("Invalid stream command in command message: {}", stream_mode_str);

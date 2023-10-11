@@ -81,3 +81,4 @@ _prepare_uhd_python()
 
 from .uhd_python import *
 from .replaymsgpushbutton import ReplayMsgPushButton
+from .streampushbutton import StreamPushButton

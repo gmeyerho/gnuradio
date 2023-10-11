@@ -1,0 +1,82 @@
+id: uhd_stream_push_button
+label: Stream Msg Push Button
+category: '[Core]/UHD/RFNoC/Blocks'
+flags: [ show_id, python ]
+
+parameters:
+-   id: label
+    label: Label
+    dtype: string
+    hide: ${ ('none' if label else 'part') }
+-   id: mode
+    label: Stream Mode
+    dtype: enum
+    default: 'start_cont'
+    options: ['start_cont', 'stop_cont', 'num_done', 'num_more']
+    option_labels: [Start, Stop, Num Done, Num More]
+-   id: now
+    label: Stream Now?
+    dtype: bool
+    default: true
+-   id: num_samps
+    label: Number of Samples
+    dtype: int
+    default: 0
+-   id: chan
+    label: Channel
+    dtype: int
+    default: 0
+-   id: message
+    label: Stream Message
+    dtype: enum
+    default: 'start_cont'
+    options: ['start_cont', 'stop_cont', 'num_done', 'num_more']
+    option_labels: [Start, Stop, Num Done, Num More]
+-   id: relBackgroundColor
+    label: Button Background
+    dtype: enum
+    default: 'default'
+    options: ['default', 'silver', 'gray', 'black', 'white', 'red', 'green', 'blue', 'navy', 'yellow', 'orange', 'purple', 'lime', 'aqua', 'teal']
+    option_labels: ['default', 'silver', 'gray', 'black', 'white', 'red', 'green', 'blue', 'navy', 'yellow', 'orange', 'purple', 'lime', 'aqua', 'teal']
+    hide: 'part'
+-   id: relFontColor
+    label: Button Font Color
+    dtype: enum
+    default: 'default'
+    options: ['default', 'silver', 'gray', 'black', 'white', 'red', 'green', 'blue', 'navy', 'yellow', 'orange', 'purple', 'lime', 'aqua', 'teal']
+    option_labels: ['default', 'silver', 'gray', 'black', 'white', 'red', 'green', 'blue', 'navy', 'yellow', 'orange', 'purple', 'lime', 'aqua', 'teal']
+    hide: 'part'
+-   id: gui_hint
+    label: GUI Hint
+    dtype: gui_hint
+    hide: part
+
+outputs:
+-   domain: message
+    id: pressed
+    optional: false
+
+templates:
+    var_make: self.${id} = None
+    make: |-
+        <%
+            win = '_%s_toggle_button'%id
+        %>\
+        ${win} = uhd.StreamPushButton(${(label if (len(label) - 2 > 0) else repr(id))},"${relBackgroundColor}","${relFontColor}","${mode}",${now},${num_samps},"${message}",${chan})
+        self.${id} = ${win}
+
+        ${gui_hint() % win}
+    callbacks:
+       - set_mode(${mode})
+       - set_message(${message})
+       - set_chan(${chan})
+       - set_num_samps(${num_samps})
+       - set_now(${now})
+documentation: |-
+    This block creates a variable push button that creates a dictionary message when pressed.
+
+    This block is intended to be used as an input to the RFNoC Replay block.
+
+    The GUI hint can be used to position the widget within the application. The hint is of the form [tab_id@tab_index]: [row, col, row_span, col_span]. Both the tab specification and the grid position are optional.
+
+file_format: 1
